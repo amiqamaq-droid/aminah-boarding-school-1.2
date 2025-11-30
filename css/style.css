@@ -1,0 +1,1222 @@
+/* ========================================
+   RESET & VARIABLES
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #0a5c3d;
+    --primary-dark: #064029;
+    --secondary: #d4af37;
+    --light: #f8f9fa;
+    --white: #ffffff;
+    --text: #2c3e50;
+    --shadow: rgba(0,0,0,0.1);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text);
+    overflow-x: hidden;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ========================================
+   NAVIGATION (Updated)
+   ======================================== */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    /* Default: Transparan, Teks Putih */
+    background: transparent;
+    box-shadow: none;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    padding: 1rem 0;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.logo-icon {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    text-decoration: none;
+}
+
+.logo-icon img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+/* Tulisan Logo Default (Putih) */
+.logo-full {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--white); 
+    white-space: nowrap;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin-left: auto;
+}
+
+/* Link Menu Default (Putih) */
+.nav-links a {
+    text-decoration: none;
+    color: var(--white);
+    font-weight: 500;
+    transition: color 0.3s;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.nav-links a:hover {
+    color: var(--secondary);
+}
+
+/* --- STYLING TOMBOL PENDAFTARAN (DEFAULT/TRANSPARAN) --- */
+.nav-links .btn-daftar {
+    background: var(--secondary); /* Warna background kuning */
+    color: var(--primary-dark); /* Warna teks hijau gelap */
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    margin-left: 1rem; /* Beri jarak sedikit dari link lain */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    text-shadow: none; /* Hilangkan shadow teks */
+    transition: all 0.3s;
+}
+
+.nav-links .btn-daftar:hover {
+    background: #c9a030; /* Sedikit lebih gelap saat hover */
+    color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+/* --- AKHIR STYLING TOMBOL PENDAFTARAN (DEFAULT) --- */
+
+
+/* Tombol Mobile Default (Putih) */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--white);
+    cursor: pointer;
+    z-index: 1001;
+}
+
+/* --- STATE: SCROLLED (Saat layar digulir) --- */
+nav.scrolled {
+    background: var(--white);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    padding: 0.5rem 0;
+}
+
+nav.scrolled .logo-full {
+    color: var(--primary); /* Jadi Hijau */
+    text-shadow: none;
+}
+
+nav.scrolled .nav-links a {
+    color: var(--text); /* Jadi Hitam/Gelap */
+    text-shadow: none;
+}
+
+nav.scrolled .nav-links a:hover {
+    color: var(--secondary);
+}
+
+/* --- STYLING TOMBOL PENDAFTARAN (SCROLLED/PUTIH) --- */
+nav.scrolled .nav-links .btn-daftar {
+    background: var(--primary); /* Warna background Hijau */
+    color: var(--white); /* Warna teks Putih */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-shadow: none;
+}
+
+nav.scrolled .nav-links .btn-daftar:hover {
+    background: var(--secondary); /* Lebih gelap saat hover */
+    color: var(--white);
+}
+/* --- AKHIR STYLING TOMBOL PENDAFTARAN (SCROLLED) --- */
+
+
+nav.scrolled .mobile-menu-btn {
+    color: var(--primary); /* Jadi Hijau */
+}
+
+/* Kelas untuk tautan yang sedang aktif/terlihat di layar */
+.nav-links li .active-link {
+    color: var(--secondary) !important; 
+    font-weight: 700;
+    /* Hilangkan border bawah agar tidak bertabrakan dengan efek hover biasa */
+    border-bottom: none !important; 
+}
+
+/* Pastikan warna tetap terlihat saat mode SCROLLED (navbar putih) */
+nav.scrolled .nav-links li .active-link {
+    color: var(--secondary) !important; /* Ubah ke primary (hijau) agar kontras di latar putih */
+}
+
+/* Jika Anda ingin tombol pendaftaran tetap menonjol, pastikan ia tidak terpengaruh */
+.nav-links .btn-daftar.active-link {
+    /* Biarkan styling tombol tetap sama */
+    color: var(--primary-dark) !important;
+    background: var(--secondary) !important;
+}
+
+
+/* ========================================
+   HERO SECTION (Updated for Mobile)
+   ======================================== */
+.hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    margin-top: 0;
+    
+    /* Default Desktop Image */
+    background: url('../assets/images/hero-pesantren-desktop.png') no-repeat center center;
+    background-size: cover;
+    border-bottom: none !important; 
+    box-shadow: none !important;
+    margin-bottom: 0;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.1); /* Overlay tipis */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 900px;
+    padding: 1rem;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-logo {
+    max-width: 500px;
+    width: 90%;
+    height: auto;
+    margin-bottom: 3rem;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+    display: none; /* non aktifkan */
+
+}
+
+.hero-buttons {
+    display: none; /* Disembunyikan sesuai referensi sebelumnya, atau nyalakan jika perlu */
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: var(--secondary);
+    color: var(--primary-dark);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-secondary {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    border: 2px solid white;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+}
+
+/* ========================================
+   SECTIONS GENERAL
+   ======================================== */
+section {
+    padding: 5rem 2rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--secondary), var(--primary));
+    border-radius: 2px;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+}
+
+/* ========================================
+   SECTION: KATA SAMBUTAN STYLING
+   ======================================== */
+
+.sambutan-section {
+    padding: 80px 0; /* Jarak atas bawah normal */
+    background-color: var(--white); /* Latar putih agar kontras dengan hero */
+    text-align: center;
+    /* PERBAIKAN UTAMA: Mengatasi garis di bawah hero */
+    margin-top: -2px; /* Menarik section ini ke atas 2px */
+    position: relative; /* Penting untuk menjaga elemen di atas Hero */
+    z-index: 2; /* Menjamin elemen ini berada di lapisan atas (menutupi Hero) */
+}
+
+.arabic-greeting {
+    font-family: 'Times New Roman', Times, serif; /* Font yang lebih formal untuk Arab */
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+    /* Membuat teks Arab rata kanan (penting untuk tampilan Arab) */
+    direction: rtl; 
+    text-align: center;
+}
+
+.sambutan-content {
+    max-width: 900px;
+    margin: 30px auto; /* Memberi jarak dan memusatkan konten utama */
+}
+
+.sambutan-content p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+}
+
+.sambutan-content .hadith {
+    font-style: italic;
+    color: var(--primary);
+    font-weight: 600;
+    border-bottom: 2px solid var(--secondary);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.sambutan-content .hadith strong {
+    font-style: normal;
+}
+
+.signature {
+    margin-top: 40px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+}
+
+/* Responsif untuk Mobile */
+@media (max-width: 768px) {
+    .sambutan-section {
+        padding: 50px 0;
+    }
+
+    .arabic-greeting {
+        font-size: 1.5rem;
+    }
+
+    .sambutan-content p {
+        font-size: 1rem;
+    }
+}
+
+/* Programs Card */
+.programs { background: var(--light); }
+.program-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+.program-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    box-shadow: 0 10px 30px var(--shadow);
+    transition: all 0.3s;
+}
+.program-card:hover { transform: translateY(-10px); }
+.program-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* KODE BARU/MODIFIKASI: Mengatur ukuran dan ketebalan judul (ULA, WUSTHA, ULYA) */
+.program-card h3 {
+    font-size: 1.8rem; /* Membuat lebih besar dari paragraf (standar 1rem) */
+    font-weight: 900; /* Membuat sangat tebal */
+    color: var(--primary-dark); /* Agar menonjol dengan warna gelap */
+    margin-bottom: 0.5rem; /* Memberi jarak minimal dengan paragraf pertama di bawahnya */
+}
+
+/* KODE BARU: Mengatur gaya untuk paragraf di dalam program-card */
+.program-card p {
+    font-size: 1rem; /* Ukuran paragraf standar (lebih kecil dari h3) */
+    font-weight: 500; /* Tidak terlalu tebal */
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 0.3rem; /* Jarak antar baris paragraf */
+}
+
+/* Facilities */
+.facilities {
+    position: relative;
+}
+
+.facilities::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+}
+
+.facilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+.facility-card {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    height: 300px;
+    background: #ddd;
+    transition: transform 0.3s;
+}
+.facility-card:hover { transform: scale(1.05); }
+.facility-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: 2rem;
+    color: white;
+}
+
+/* Keunggulan */
+.keunggulan { 
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef); 
+    position: relative; /* <-- TAMBAHKAN INI */
+}
+.keunggulan::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+}
+
+.keunggulan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+.keunggulan-item {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px var(--shadow);
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+.keunggulan-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   PROGRAM UNGGULAN - SIMPLE ELEGANT (DUPLICATE SECTION)
+   ======================================== */
+.program-unggulan {
+    background: var(--white);
+    padding: 5rem 2rem;
+    position: relative;
+}
+
+.program-unggulan::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+}
+
+.program-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    margin-top: 3rem;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.program-item {
+    background: linear-gradient(135deg, var(--white) 0%, #fafafa 100%);
+    padding: 3rem 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.program-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.program-item:hover::before {
+    left: 100%;
+}
+
+.program-item:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 15px 45px rgba(10, 92, 61, 0.15);
+    border-color: var(--secondary);
+}
+
+.program-icon-wrapper {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(10, 92, 61, 0.3);
+    transition: all 0.3s ease;
+}
+
+.program-item:hover .program-icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 12px 30px rgba(10, 92, 61, 0.4);
+}
+
+.program-icon-wrapper i {
+    font-size: 3rem;
+    color: var(--secondary);
+}
+
+.program-item h3 {
+    font-size: 1.6rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.program-item p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.program-features {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0 0;
+    text-align: left;
+}
+
+.program-features li {
+    padding: 0.6rem 0;
+    font-size: 0.95rem;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.program-features li i {
+    color: var(--secondary);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.program-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--secondary), #c9a030);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 1rem;
+}
+
+/* Responsive untuk Program Unggulan */
+@media (max-width: 992px) {
+    .program-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .program-cards {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .program-item {
+        padding: 2.5rem 2rem;
+    }
+
+    .program-icon-wrapper {
+        width: 80px;
+        height: 80px;
+    }
+
+    .program-icon-wrapper i {
+        font-size: 2.5rem;
+    }
+
+    .program-item h3 {
+        font-size: 1.4rem;
+    }
+}
+
+/* ========================================
+   SECTION CTA (GLOBAL - Diterapkan ke Desktop & Mobile)
+   ======================================== */
+.cta-section {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: white;
+    text-align: center;
+    padding: 5rem 2rem;
+}
+.cta-section h2 { 
+    font-size: 2.8rem; 
+    margin-bottom: 1rem; 
+}
+.cta-section p { 
+    font-size: 1.3rem; 
+    margin-bottom: 2.5rem; 
+    opacity: 0.95; 
+}
+
+/* CONTAINER BARU UNTUK TOMBOL */
+.cta-buttons-group {
+    display: flex;
+    flex-direction: column; /* INI MEMBUATNYA SELALU TERTUMPUK (VERTIKAL) */
+    align-items: center;
+    gap: 1.5rem; /* Jarak antara tombol */
+}
+
+/* Styling untuk Tombol Utama (btn-primary) */
+.btn-primary {
+    display: inline-block;
+    background: var(--secondary);
+    color: var(--primary-dark);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    min-width: 280px; /* Lebar minimum tombol agar sama */
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Styling untuk Tombol Kedua (btn-secondary) */
+.btn-secondary {
+    display: inline-block;
+    background: transparent; /* Background Transparan */
+    color: white; /* Teks Putih */
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    border: 2px solid white; /* Border Putih */
+    transition: all 0.3s;
+    min-width: 280px; /* Lebar minimum tombol agar sama */
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1); /* Efek hover background */
+    transform: translateY(-3px);
+}
+/* ========================================
+   FOOTER (REDESIGNED)
+   ======================================== */
+footer {
+    background: var(--primary-dark);
+    color: white;
+    padding: 3rem 0 1rem;
+    font-size: 0.95rem;
+}
+
+/* Style tambahan untuk memusatkan nama pimpinan (Leader Section) */
+.leader-info{
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    /* Grid 3 Kolom: Kiri (Info), Tengah (Menu), Kanan (Map) */
+    grid-template-columns: 1.2fr 0.8fr 1fr; 
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 2rem;
+}
+
+/* Footer Left */
+.footer-left .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+.footer-logo-img { width: 48px; height: 40px; }
+.footer-logo-text { font-size: 1.2rem; font-weight: 700; color: var(--secondary); }
+.footer-tagline {
+    font-style: italic;
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+    margin-left: 1rem;
+    display: block;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+.footer-contact-info p {
+    margin-left: 1rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+.footer-contact-info i {
+    width: 20px;
+    color: var(--secondary);
+    margin-top: 4px;
+}
+.footer-contact-info a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Styling Tautan Kontak di Footer */
+.footer-contact-info p a {
+    color: var(--white); /* Pastikan warna teksnya putih (sesuai tema footer gelap Anda) */
+    text-decoration: none;
+    transition: color 0.3s ease; /* Transisi untuk membuat perubahan warna halus */
+}
+
+/* Efek HOVER pada Nomor WhatsApp (dan Telepon) */
+.footer-contact-info p a:hover {
+    color: var(--secondary); /* Ubah ke warna kuning (secondary) saat di-hover */
+    text-decoration: none; /* Opsional: Tambahkan garis bawah */
+}
+
+.footer-contact-info p span:hover {
+    color: var(--secondary); /* Ubah ke warna kuning (secondary) saat di-hover */
+    text-decoration: none; /* Opsional: Tambahkan garis bawah */
+}
+
+/* Footer Center */
+.footer-center { text-align: center; }
+.footer-center h3 {
+    color: var(--secondary);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+/*
+.footer-menu {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+.footer-menu li { margin-bottom: 0.5rem; }
+.footer-menu a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.footer-menu a:hover { color: var(--white); text-decoration: underline; }
+*/
+
+.footer-socials {
+    margin-top: 200px; ;
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+}
+.footer-socials a {
+    color: white;
+    font-size: 1.4rem;
+    transition: transform 0.3s, color 0.3s;
+}
+.footer-socials a:hover {
+    transform: translateY(-3px);
+    color: var(--secondary);
+}
+
+/* Footer Right (Map) */
+.footer-right {
+    display: flex;
+    justify-content: flex-end;
+}
+.footer-map-container {
+    width: 100%;
+    max-width: 500px;
+    height: 240px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.footer-map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.85rem;
+    opacity: 0.7;
+    line-height: 1.6;
+}
+.footer-bottom p a{
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-bottom p a:hover {
+    color: var(--secondary)
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================
+   VISI - MISI
+   ======================================== */
+
+.visi-misi {
+    background-color: var(--light);
+    position: relative;
+}
+
+/* untuk menambah garis sebelum section */
+.visi-misi::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+}
+
+.vm-content-simple {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    padding: 0 2rem;
+    text-align: left;
+}
+.vm-content-simple h3 {
+    font-size: 1.8rem;
+    color: var(--primary-dark);
+    border-left: 5px solid var(--secondary);
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* ========================================
+   VIDEO SECTION STYLING (Untuk Tampilan Elegant & Responsive)
+   ======================================== */
+
+.video-section {
+    padding: 10px 0 60px 0; /* Jarak atas bawah */
+    background-color: var(--light); /* Asumsi warna terang dari variabel Anda */
+    text-align: center;
+}
+
+.video-section .section-title {
+    margin-bottom: 30px;
+    color: var(--primary-dark);
+    
+    /* 1. Override positioning style global agar tidak menyebabkan pergeseran: */
+    position: static; /* Nonaktifkan positioning relatif */
+    left: auto;
+    transform: none;
+    
+    /* 2. Terapkan centering standar untuk elemen block: */
+    display: block; /* Pastikan elemen berperilaku sebagai block */
+    width: fit-content; /* Batasi lebar judul sesuai isinya */
+    margin-left: auto; /* Pusatkan elemen block */
+    margin-right: auto;
+    
+    text-align: center; /* Untuk memastikan teks di dalamnya rata tengah */
+}
+
+.video-responsive {
+    /* Membatasi lebar video di desktop agar tidak terlalu besar */
+    max-width: 900px; 
+    
+    /* Memposisikan kontainer video di tengah halaman */
+    margin: 0 auto; 
+    
+    /* Teknik Responsive Aspect Ratio (Rasio 16:9) */
+    position: relative;
+    padding-bottom: 56.25%; /* 9 / 16 * 100% */
+    height: 0;
+    overflow: hidden;
+    
+    /* Efek Elegant: Sudut membulat dan bayangan */
+    border-radius: 12px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
+}
+
+/* Menetapkan ukuran iframe agar mengisi penuh kontainer responsif */
+.video-responsive iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none; /* Menghilangkan border default iframe */
+}
+
+/* Responsiveness tambahan untuk ukuran layar sangat kecil */
+@media (max-width: 768px) {
+    .video-responsive {
+        /* Mengurangi padding-bottom sedikit untuk layar mobile */
+        padding-bottom: 56.25%; 
+        border-radius: 0; /* Hapus sudut membulat di mobile agar tampilan lebih full */
+    }
+}
+
+
+
+/* ========================================
+   SECTION PROGRAM & FASILITAS UTAMA (SIMPLE ELEGANT)
+   ======================================== */
+.program-fasilitas-section {
+    background: var(--white); /* Latar belakang menjadi putih */
+    padding: 5rem 2rem 3rem 2rem;
+    color: var(--text); /* Warna teks menjadi gelap */
+    text-align: center;
+    position: relative;
+}
+
+.program-fasilitas-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+}
+
+/* FIX: Judul section agar rata tengah */
+.program-fasilitas-section .section-title {
+    color: var(--primary); /* Judul section jadi hijau agar terlihat di background putih */
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    left: auto;
+    transform: none;
+}
+
+.program-fasilitas-section .section-title::after {
+    /* Biarkan warna garis bawah tetap sama */
+    background: linear-gradient(90deg, var(--secondary), var(--primary));
+}
+
+/* Container utama untuk daftar fasilitas */
+.feature-list-wrapper {
+    max-width: 800px;
+    margin: 3rem auto 0;
+    padding: 2.5rem;
+    /* Menggunakan warna abu-abu muda (light) untuk membedakannya sedikit dari background section yang putih */
+    background: var(--light);
+    color: var(--text);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+}
+
+.feature-list-title {
+    font-size: 2rem;
+    color: var(--primary-dark);
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.feature-list-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: var(--secondary);
+    border-radius: 2px;
+}
+
+/* Grid untuk 2 kolom daftar di desktop */
+.simple-list-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    text-align: left;
+}
+
+/* Gaya untuk setiap daftar (ul) */
+.clean-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.clean-list li {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed rgba(0,0,0,0.1); /* Garis pemisah yang elegan */
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    gap: 1rem;
+    transition: color 0.3s;
+}
+
+.clean-list li:hover {
+    color: var(--primary);
+}
+
+.clean-list li i {
+    color: var(--secondary); /* Icon checklist kuning */
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.tenaga-pendidik .section-title {
+    position: static;
+    left: auto;
+    transform: none;
+}
+
+.leader-info {
+    text-align: center;
+}
+
+.leader-info h3 {
+    text-align: center;
+}
+
+.tenaga-pendidik {
+    padding-top: 0; 
+    padding-left: 0; 
+    padding-right: 0;    
+    padding-bottom: 5%;
+    text-align: center;
+}
+
+.tenaga-pendidik p {
+    max-width: 900px;
+    margin: 1.5rem auto 3rem auto;
+    line-height: 1.8;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN (MOBILE & TABLET)
+   ======================================== */
+@media (max-width: 768px) {
+    /* Navbar Mobile */
+    .mobile-menu-btn { display: block; }
+    
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--primary); /* Background Menu Hijau */
+        padding: 1.5rem 0;
+        text-align: center;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .nav-links.active { display: flex; }
+    
+    /* Pastikan link di menu mobile terlihat (Putih) */
+    .nav-links a { color: var(--white) !important; font-size: 1.1rem; padding: 0.5rem 0; display: block; }
+
+    /* Tombol Pendaftaran Mobile */
+    .nav-links .btn-daftar { 
+        margin: 1rem auto 0.5rem auto !important; /* Pusatkan tombol di menu mobile */
+        width: fit-content;
+    }
+    
+    /* Mobile Hero Fix (Load Gambar Khusus Mobile) */
+    .hero {
+        min-height: 60vh;
+        /* Menggunakan file .jpg yang diupload user */
+        background-image: url('../assets/images/hero-pesantren-mobile.png') !important;
+        background-position: top center;
+        background-size: cover;
+    }
+
+    .hero-content {
+        padding: 1rem;
+        max-width: 100%;
+    }
+    
+    .hero-logo {
+        max-width: 280px; /* Logo Banner lebih kecil di mobile */
+    }
+
+    /* Footer Mobile Stack */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2.5rem;
+    }
+    
+    .footer-left .footer-logo { justify-content: center; }
+    
+    /* PERUBAHAN UNTUK MEMUSATKAN TEKS NAMA PIMPINAN */
+    .footer-contact-info p { 
+        justify-content: center; 
+        text-align: center; /* DIUBAH DARI 'left' MENJADI 'center' UNTUK MEMUSATKAN TEKS PADA MOBILE */
+    }
+    
+    .footer-right { justify-content: center; }
+    
+    .section-title { font-size: 1.8rem; }
+    .cta-section h2 { font-size: 2rem; }
+    
+    /* [NEW FIX] Tumpuk daftar fasilitas di mobile */
+    .simple-list-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .feature-list-wrapper {
+        padding: 1rem;
+    }
+    
+    .feature-list-title {
+        font-size: 1.5rem;
+    }
+    
+    .clean-list li {
+        font-size: 1rem;
+    }
+
+    .footer-socials {
+        margin-top: 0.5rem;
+        justify-content: center;
+    }
+}
